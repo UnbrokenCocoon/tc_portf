@@ -4,30 +4,37 @@ import Layout from '../layouts/Layout.astro';
 import ContextAlert from '../components/ContextAlert.astro';
 import Markdown from '../components/Markdown.astro';
 
-// Update your import statement to include all data
-import { 
-  personalInfo, 
-  projectsData, 
-  skillsData, 
-  educationData, 
-  publicationsData,
-  dataAnalysisData
+// Import all your data
+import { 
+  personalInfo, 
+  projectsData, 
+  skillsData, 
+  educationData, 
+  publicationsData,
+  dataAnalysisData
 } from '../data/portfolio.js';
+---
 
 <Layout title={`${personalInfo.name}'s Portfolio`}>
   <div class="container mx-auto px-4 py-8 md:py-16">
     <!-- Hero Section -->
-    <section class="text-center mb-12 md:mb-20">
-      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-3">
-        {personalInfo.name}
-      </h1>
-      <h2 class="text-xl md:text-3xl font-semibold text-indigo-400 mb-4">
-        NLP & Topic Modeling Researcher
-      </h2>
-      <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-        I build transparent, reproducible NLP pipelines that bridge computational linguistics, social policy, and historical analysis — 
-        with a focus on topic modeling, OCR accuracy, and ethical AI.
-      </p>
+<section class="text-center mb-12 md:mb-20">
+  <h1 
+    class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-3" 
+    style="text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);"
+  >
+    {personalInfo.name}
+  </h1>
+  <h2 
+    class="text-xl md:text-3xl font-semibold text-white-400 mb-4" 
+    style="text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);"
+  >
+    NLP & Topic Modeling Researcher
+  </h2>
+  <p class="text-lg md:text-xl text-white-300 max-w-3xl mx-auto leading-relaxed">
+    I build transparent, reproducible NLP pipelines that bridge computational linguistics, social policy, and historical analysis — 
+    with a focus on topic modeling, OCR accuracy, and ethical AI.
+  </p>
 
       <!-- Optional: Call-to-action or key links -->
       <div class="mt-8 flex justify-center gap-6">
@@ -47,50 +54,54 @@ import { 
     </section>
 
     <!-- Projects Section -->
-    <section class="mb-12 md:mb-20">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">Projects</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-        {projectsData.map(project => (
-          <article class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <h3 class="text-xl font-semibold mb-2">
-              {project.title}
-            </h3>
-            <p class="text-gray-400 mb-4">{project.description}</p>
-            
-            <div class="flex flex-wrap gap-2 mb-4">
-              {project.skills.map(skill => (
-                <span class="bg-gray-700 text-gray-200 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  {skill}
-                </span>
-              ))}
-            </div>
+<section class="mb-12 md:mb-20" id="projects">
+  <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">Projects</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+    {projectsData.map(project => (
+      <article class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <h3 class="text-xl font-semibold text-white mb-2 leading-tight">
+          {project.title}
+        </h3>
+        <p class="text-gray-400 mb-4">
+          {project.description}
+        </p>
+        
+        <!-- Skills Badges -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          {project.skills.map(skill => (
+            <span class="bg-gray-700 text-gray-200 text-xs font-medium px-2.5 py-0.5 rounded-full">
+              {skill}
+            </span>
+          ))}
+        </div>
 
-            <div class="flex gap-4">
-              {project.link && (
-                <a 
-                  href={project.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  class="text-indigo-400 hover:text-indigo-300 transition-colors"
-                >
-                  View Live
-                </a>
-              )}
-              {project.github && (
-                <a 
-                  href={project.github} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  class="text-indigo-400 hover:text-indigo-300 transition-colors"
-                >
-                  GitHub
-                </a>
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
+        <!-- Links -->
+        <div class="flex gap-4">
+          {project.link && (
+            <a 
+              href={project.link} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="text-indigo-400 hover:text-indigo-300 transition-colors text-sm font-medium"
+            >
+              View Live →
+            </a>
+          )}
+          {project.github && (
+            <a 
+              href={project.github} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="text-indigo-400 hover:text-indigo-300 transition-colors text-sm font-medium"
+            >
+              GitHub →
+            </a>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
 
     <!-- Skills Section -->
     <section class="mb-12 md:mb-20">
@@ -119,7 +130,7 @@ import { 
     {educationData.map(edu => (
       <div class="bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
         <h3 class="text-xl font-semibold text-white mb-2">{edu.degree}</h3>
-        <p class="text-indigo-300 font-medium">{edu.university}</p>
+        <p class="text-indigo-300 font-medium">{edu.school}</p>
         <p class="text-gray-400 text-sm mt-1">{edu.years}</p>
       </div>
     ))}
