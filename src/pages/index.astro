@@ -1,21 +1,299 @@
 ---
+// Import the Layout component to wrap the entire page.
 import Layout from '../layouts/Layout.astro';
 import ContextAlert from '../components/ContextAlert.astro';
 import Markdown from '../components/Markdown.astro';
 
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
+// Update your import statement to include all data
+import { 
+  personalInfo, 
+  projectsData, 
+  skillsData, 
+  educationData, 
+  publicationsData,
+  dataAnalysisData
+} from '../data/portfolio.js';
 
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
----
+<Layout title={`${personalInfo.name}'s Portfolio`}>
+  <div class="container mx-auto px-4 py-8 md:py-16">
+    <!-- Hero Section -->
+    <section class="text-center mb-12 md:mb-20">
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-3">
+        {personalInfo.name}
+      </h1>
+      <h2 class="text-xl md:text-3xl font-semibold text-indigo-400 mb-4">
+        NLP & Topic Modeling Researcher
+      </h2>
+      <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        I build transparent, reproducible NLP pipelines that bridge computational linguistics, social policy, and historical analysis — 
+        with a focus on topic modeling, OCR accuracy, and ethical AI.
+      </p>
 
-<Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-8" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
+      <!-- Optional: Call-to-action or key links -->
+      <div class="mt-8 flex justify-center gap-6">
+        <a
+          href="#publications"
+          class="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors"
+        >
+          View Research →
+        </a>
+        <a
+          href="#projects"
+          class="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors"
+        >
+          Explore Projects →
+        </a>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="mb-12 md:mb-20">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">Projects</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        {projectsData.map(project => (
+          <article class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h3 class="text-xl font-semibold mb-2">
+              {project.title}
+            </h3>
+            <p class="text-gray-400 mb-4">{project.description}</p>
+            
+            <div class="flex flex-wrap gap-2 mb-4">
+              {project.skills.map(skill => (
+                <span class="bg-gray-700 text-gray-200 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                  {skill}
+                </span>
+              ))}
+            </div>
+
+            <div class="flex gap-4">
+              {project.link && (
+                <a 
+                  href={project.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="text-indigo-400 hover:text-indigo-300 transition-colors"
+                >
+                  View Live
+                </a>
+              )}
+              {project.github && (
+                <a 
+                  href={project.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="text-indigo-400 hover:text-indigo-300 transition-colors"
+                >
+                  GitHub
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="mb-12 md:mb-20">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">Skills</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {skillsData.map(skillCategory => (
+          <div>
+            <h3 class="text-xl font-semibold mb-4 text-indigo-400">
+              {skillCategory.category}
+            </h3>
+            <ul class="list-disc list-inside space-y-2 text-gray-300">
+              {skillCategory.items.map(item => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Education & Publications Section -->
+   <!-- Education Section -->
+<section class="mb-12 md:mb-20">
+  <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">Education</h2>
+  <div class="grid grid-cols-1 md:col-span-2 lg:col-span-1 gap-6 max-w-2xl mx-auto">
+    {educationData.map(edu => (
+      <div class="bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <h3 class="text-xl font-semibold text-white mb-2">{edu.degree}</h3>
+        <p class="text-indigo-300 font-medium">{edu.university}</p>
+        <p class="text-gray-400 text-sm mt-1">{edu.years}</p>
+      </div>
+    ))}
+  </div>
+</section>
+      
+      <!-- Publications Section -->
+<section class="mb-12 md:mb-20">
+  <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">Publications & Research</h2>
+  <p class="text-center text-gray-400 mb-10 max-w-3xl mx-auto">
+    My research bridges NLP, social policy, and historical analysis — using computational methods to explore community unionism, topic model evaluation, and OCR accuracy.
+  </p>
+
+  <div class="space-y-8">
+    {publicationsData.map(pub => (
+      <article class="bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <h3 class="text-lg font-semibold text-white mb-2">{pub.title}</h3>
+        <p class="text-indigo-300 text-sm font-medium mb-2">
+          {pub.journal} • {pub.year}
+        </p>
+        <p class="text-gray-400 text-sm mb-4 line-clamp-2">{pub.description}</p>
+        <a
+          href={pub.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors"
+        >
+          Read on {pub.journal} →
+        </a>
+      </article>
+    ))}
+  </div>
+
+  <!-- Footer Links -->
+  <div class="mt-12 text-center">
+    <p class="text-gray-500 text-sm">
+      Explore more on{" "}
+      <a
+        href="https://github.com/UnbrokenCocoon"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-indigo-400 hover:text-indigo-300"
+      >
+        GitHub
+      </a>
+      ,{" "}
+      <a
+        href="https://medium.com/@thomascompton"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-indigo-400 hover:text-indigo-300"
+      >
+        Medium
+      </a>
+      , or{" "}
+      <a
+        href="https://arxiv.org/search/?query=thomas+compton&searchtype=all"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-indigo-400 hover:text-indigo-300"
+      >
+        arXiv
+      </a>
+      .
     </p>
-</Layout>
+  </div>
+</section>
+
+<!-- Data Analysis & Visualization Section -->
+<section class="py-16 md:py-24 px-4" id="data-analysis">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">Data Analysis & Visualisation</h2>
+    <p class="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
+      My research combines lexical and semantic methods to ensure transparent, reproducible, and interpretable NLP results. This multi-layered approach mitigates the limitations of black-box models, as detailed in my paper <em>"Beyond the Black Box"</em>.
+    </p>
+
+    <div class="space-y-16">
+      <!-- UMAP: Boot & Shoe Union -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div class="flex justify-center">
+          <img
+            src="/images/umap_bs.png"
+            alt="UMAP projection of BERTopic model for National Boot and Shoe Union corpus"
+            class="rounded-xl shadow-lg border border-gray-700 max-w-full h-auto"
+          />
+        </div>
+        <div>
+          <h3 class="text-2xl font-semibold text-white mb-3">UMAP: Boot & Shoe Union (1920s)</h3>
+          <p class="text-gray-300 mb-4">
+            This UMAP projection visualizes sentence embeddings from the National Boot and Shoe Union reports. Tight, centralized clusters indicate high thematic coherence, reflecting a traditional servicing model focused on industrial relations and member services.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            {["UMAP", "BERTopic", "Sentence Transformers", "Python"].map((tech) => (
+              <span class="bg-gray-700 text-indigo-300 text-xs font-medium px-3 py-1 rounded-full">
+                {tech}
+              </span>
+            ))}
+          </div>
+          <div class="mt-4 text-sm text-gray-500">
+            <p>Gini: 0.38 | Topic 20 Size: 984 | Coverage: 54.73%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- UMAP: Unite Community -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div class="order-2 md:order-1 flex justify-center">
+          <img
+            src="/images/umap_unicu.png"
+            alt="UMAP projection of BERTopic model for Unite Community corpus"
+            class="rounded-xl shadow-lg border border-gray-700 max-w-full h-auto"
+          />
+        </div>
+        <div class="order-1 md:order-2">
+          <h3 class="text-2xl font-semibold text-white mb-3">UMAP: Unite Community (2010s–2020s)</h3>
+          <p class="text-gray-300 mb-4">
+            This UMAP shows a more dispersed semantic structure, reflecting Unite Community's diverse volunteer authorship and engagement with social justice themes like housing, climate, and anti-racism.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            {["UMAP", "Topic Modeling", "BERTopic", "NLP"].map((tech) => (
+              <span class="bg-gray-700 text-indigo-300 text-xs font-medium px-3 py-1 rounded-full">
+                {tech}
+              </span>
+            ))}
+          </div>
+          <div class="mt-4 text-sm text-gray-500">
+            <p>Gini: 0.28 | Topic 20 Size: 261 | Coverage: 58.33%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- OCR Accuracy Comparison -->
+      <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+        <h3 class="text-2xl font-semibold text-white mb-4">OCR Accuracy: LLMs vs Traditional Tools</h3>
+        <p class="text-gray-300 mb-5">
+          Benchmarking Word Error Rate (WER) and Character Error Rate (CER) across OCR tools. LLMs like Gemini and Qwen significantly outperform traditional packages on degraded historical text.
+        </p>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr class="border-b border-gray-600">
+                <th class="text-left py-2 text-gray-300">Engine</th>
+                <th class="text-left py-2 text-gray-300">WER</th>
+                <th class="text-left py-2 text-gray-300">CER</th>
+                <th class="text-left py-2 text-gray-300">LLM</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-400">
+              <tr class="border-b border-gray-700"><td class="py-2">Gemini 2.0 Flash</td><td>0.04</td><td>0.02</td><td>Yes</td></tr>
+              <tr class="border-b border-gray-700"><td class="py-2">Qwen3-235B-A22B</td><td>0.06</td><td>0.03</td><td>Yes</td></tr>
+              <tr class="border-b border-gray-700"><td class="py-2">Tesseract</td><td>0.69</td><td>0.43</td><td>No</td></tr>
+              <tr class="border-b border-gray-700"><td class="py-2">EasyOCR</td><td>0.89</td><td>0.67</td><td>No</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a
+            href="https://thomascompton.medium.com/comparing-llms-and-python-ocr-packages-opportunities-and-challenges-in-ocr-accuracy-19d6146f2ada"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+          >
+            Read Full Analysis →
+          </a>
+          <a
+            href="https://github.com/UnbrokenCocoon/OCR-evaluation"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+          >
+            GitHub Repo
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
